@@ -1,0 +1,8 @@
+*** Settings ***
+Resource          ../Keywords.txt
+
+*** Keywords ***
+Login Jira
+    [W] Input Text    //*[@id="login-form-username"]    chokchaisak
+    [W] Input Text    //*[@id="login-form-password"]    P2ssw0rd
+    [W] Click Element    //*[@id="login"]

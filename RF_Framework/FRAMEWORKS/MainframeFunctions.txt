@@ -1,0 +1,154 @@
+*** Settings ***
+Resource          Library.txt
+
+*** Keywords ***
+[MF] Clear Screen
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] Clear Screen
+    Execute Command    Clear
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[MF] Close
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] Close
+    Close Connection
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[MF] Compare Message
+    [Arguments]    ${Message}
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] Compare Message
+    Page Should Contain String    ${Message}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[MF] Compare Message Regular
+    [Arguments]    ${Message}    ${Attribute}=Message
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] Compare Message Regular
+    Page Should Match Regex    ${Message}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[MF] Enter
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] Enter
+    Execute Command    Enter
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[MF] Enter Send Message
+    [Arguments]    ${Message}
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] Enter Send Message
+    Write    ${Message}
+    KEYWORD STATUS END
+
+[MF] F1
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] F1
+    Send PF    1
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[MF] F10
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] F10
+    Send PF    10
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[MF] F2
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] F2
+    Send PF    2
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[MF] F3
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] F2
+    Send PF    3
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[MF] F4
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] F4
+    Send PF    4
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[MF] F5
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] F5
+    Send PF    5
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[MF] F6
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] F6
+    Send PF    6
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[MF] F7
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] F7
+    Send PF    7
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[MF] F8
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] F8
+    Send PF    8
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[MF] F9
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] F9
+    Send PF    9
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[MF] Open Mainframe
+    [Arguments]    ${Hostname}
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] Open Mainframe
+    Open Connection    ${Hostname}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[MF] Select Down
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] Select Down
+    Execute Command    SelectDown
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[MF] Select Up
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] Select Up
+    Execute Command    SelectUp
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[MF] Send Message
+    [Arguments]    ${Message}
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] Send Message
+    Write Bare    ${Message}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[MF] Tab
+    Set Library Search Order    Mainframe3270
+    KEYWORD STATUS PENDING    [MF] Tab
+    Execute Command    Tab
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN

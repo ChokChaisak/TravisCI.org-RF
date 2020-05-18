@@ -1,0 +1,6 @@
+*** Settings ***
+Resource          ../Keywords.txt
+
+*** Keywords ***
+Create Issue Jira
+    [W] Click Element    //*[@id="create_link"]

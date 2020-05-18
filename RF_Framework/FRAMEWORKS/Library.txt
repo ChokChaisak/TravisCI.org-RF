@@ -1,0 +1,10 @@
+*** Settings ***
+Resource          GlobleKeywords.txt
+Library           Collections
+Library           DateTime
+Library           OperatingSystem
+Library           String
+Library           SeleniumLibrary
+Library           AppiumLibrary
+Library           ExcelRobot
+Library           RequestsLibrary

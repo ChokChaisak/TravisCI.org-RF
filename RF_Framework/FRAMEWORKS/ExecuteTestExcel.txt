@@ -1,0 +1,88 @@
+*** Settings ***
+Resource          Library.txt
+Resource          DataValidation.txt
+
+*** Keywords ***
+[EW] Get Data All Row For Excel
+    [Arguments]    ${Filename}    ${SheetName}    ${TESTCASE}
+    Set Library Search Order    ExcelRobot
+    ${CountColumn}    ${CountRow}    [ER] Open Excel    ${Filename}    ${SheetName}
+    [EW] Open Excel To Write    ${Filename}    ${SheetName}    ${RESULT}
+    ${Poin}    Set Variable
+    FOR    ${I}    IN RANGE    1    ${CountRow}
+        ${Poin}    Set Variable    ${EMPTY}
+        ${Return}    [ER] Read Cell Data Column For Excel    ${SheetName}    ${CountColumn}    ${I}
+        ${Poin}    Set Variable    ${Return}
+        Run Keyword If    "${Return}[2]"=="${TESTCASE}"    Exit For Loop
+    END
+    Log    ${Poin}
+    FOR    ${I}    IN    ${Poin}[0]
+        [EW] Write Cell Status For Excel    ${RESULT}    A    No.    ${I}    ${Poin}[0]
+        [EW] Write Cell Status For Excel    ${RESULT}    B    STATUS    ${I}    ${Poin}[1]
+        [EW] Write Cell Test Case For Excel    ${RESULT}    C    TESTCASE_NAME    ${I}    ${Poin}[2]
+        Run Keyword If    "${Poin}[1]"=="PASS" or "${Poin}[1]"=="NOT EXECUTE"    Exit For Loop
+        ${Date}    Get Current Date
+        [EW] Write Cell Message For Excel    ${RESULT}    E    START TIME    ${I}    ${Date}
+        ${STATUS}    ${ERROR}    Run Keyword And Ignore Error    ${TESTCASE}
+        Open Excel To Write    ${FileExcelWrite}
+        ${Date}    Get Current Date
+        [EW] Write Cell Message For Excel    ${RESULT}    F    END TIME    ${I}    ${Date}
+        [EW] Write Cell Status For Excel    ${RESULT}    B    STATUS    ${I}    ${STATUS}
+        Run Keyword If    "${STATUS}"=="FAIL"    [EW] Write Cell Error For Excel    ${RESULT}    D    RESULT    ${I}    ${ERROR}
+        Run Keyword If    "${STATUS}"=="FAIL"    Fail    ${ERROR}
+    END
+
+[EW] Open Excel To Write
+    [Arguments]    ${Filename}    ${SheetName}    ${RESULTSheet}
+    Set Library Search Order    ExcelRobot
+    ${Filename}    Join Path    ${Filename}
+    ${DIR}    Remove String    ${CURDIR}    FRAMEWORKS
+    ${FileExcelWrite}    Set Variable    ${DIR}${/}${Filename}
+    Set Suite Variable    ${FileExcelWrite}
+    Open Excel To Write    ${FileExcelWrite}
+    ${ListSheet}    Get Sheet Names
+    ${Count}    Get Match Count    ${ListSheet}    ${RESULTSheet}
+    Run Keyword If    "${Count}"=="0"    Create Sheet    ${RESULTSheet}
+
+[EW] Write Cell Error For Excel
+    [Arguments]    ${SheetName}    ${Column}    ${Title}    ${Row}    ${ERROR}
+    Set Library Search Order    ExcelRobot
+    ${Row}    Evaluate    ${Row}+1
+    Write To Cell By Name    ${SheetName}    ${Column}1    ${Title}
+    Write To Cell By Name    ${SheetName}    ${Column}${Row}    ${ERROR}
+    Save Excel
+
+[EW] Write Cell Status For Excel
+    [Arguments]    ${SheetName}    ${Column}    ${Title}    ${Row}    ${STATUS}
+    Set Library Search Order    ExcelRobot
+    ${Row}    Evaluate    ${Row}+1
+    Write To Cell By Name    ${SheetName}    ${Column}1    ${Title}
+    Write To Cell By Name    ${SheetName}    ${Column}${Row}    ${STATUS}
+    Save Excel
+
+[EW] Write Cell Test Case For Excel
+    [Arguments]    ${SheetName}    ${Column}    ${Title}    ${Row}    ${TESTCASENAME}
+    Set Library Search Order    ExcelRobot
+    ${Row}    Evaluate    ${Row}+1
+    Write To Cell By Name    ${SheetName}    ${Column}1    ${Title}
+    Write To Cell By Name    ${SheetName}    ${Column}${Row}    ${TESTCASENAME}
+    Save Excel
+
+[EW] Write Cell Message For Excel
+    [Arguments]    ${SheetName}    ${Column}    ${Title}    ${Row}    ${Msg}
+    Set Library Search Order    ExcelRobot
+    ${Row}    Evaluate    ${Row}+1
+    Write To Cell By Name    ${SheetName}    ${Column}1    ${Title}
+    Write To Cell By Name    ${SheetName}    ${Column}${Row}    ${Msg}
+    Save Excel
+
+[EW] Write Cell Message To Excel
+    [Arguments]    ${Filename}    ${SheetName}    ${Column}    ${Title}    ${Row}    ${Msg}
+    Set Library Search Order    ExcelRobot
+    ${Filename}    Join Path    ${Filename}
+    ${DIR}    Remove String    ${CURDIR}    FRAMEWORKS
+    ${DIR}    Set Variable    ${DIR}${/}${Filename}
+    Open Excel To Write    ${DIR}
+    Write To Cell By Name    ${SheetName}    ${Column}1    ${Title}
+    Write To Cell By Name    ${SheetName}    ${Column}${Row}    ${Msg}
+    Save Excel

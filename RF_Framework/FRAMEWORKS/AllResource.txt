@@ -1,0 +1,7 @@
+*** Settings ***
+Resource          WebFunctions.txt
+Resource          DataValidation.txt
+Resource          MobileFunctions.txt
+Resource          MainframeFunctions.txt
+Resource          ExecuteTestExcel.txt
+Resource          APIFunctions.txt

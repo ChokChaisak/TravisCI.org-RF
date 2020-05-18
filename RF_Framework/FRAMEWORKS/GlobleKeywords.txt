@@ -1,0 +1,79 @@
+*** Settings ***
+Resource          Library.txt
+
+*** Keywords ***
+ANDROID SET
+    [Arguments]    ${Platform}    ${Version}    ${DevicesName}    ${Package}    ${Activity}    ${Resetapp}=true    ${Port}=4723    ${Automate}=UiAutomator2
+    Open Application    http://localhost:${Port}/wd/hub    platformName=${Platform}    platformVersion=${Version}    deviceName=${DevicesName}    appPackage=${Package}    appActivity=${Activity}    automationName=${Automate}    noReset=${Resetapp}
+    FOR    ${I}    IN    platformName=${Platform}    platformVersion=${Version}    deviceName=${DevicesName}
+        Log To Console    ${I}
+    END
+
+KEYWORD STATUS END
+    [Arguments]    ${Msg}=PASS
+    Set Suite Variable    ${KEYWORD_STATUS}    ${Msg}
+
+KEYWORD STATUS PENDING
+    [Arguments]    ${KeywordName}
+    Set Suite Variable    ${KEYWORD_STATUS}    FAIL
+    Set Suite Variable    ${KEYWORD_NAME}    ${KeywordName}
+    FOR    ${I}    IN    ${KeywordName}
+        log    [Pending] ${I}
+        Log To Console    [Pending] ${I}
+    END
+
+KEYWORD STATUS TEARDOWN
+    FOR    ${I}    IN    ${KEYWORD_NAME}
+        log    [${KEYWORD_STATUS}] ${I}
+        Log To Console    [${KEYWORD_STATUS}] ${I}
+    END
+
+WAIT FOR PAGE CONTAINS ELEMENT
+    [Arguments]    ${Element}    ${TimeOut}=10s
+    ${Return}    Run Keyword And Ignore Error    Wait Until Page Contains Element    ${Element}    ${TimeOut}
+    [Return]    ${Return}
+
+WAIT FOR PANG CONTAINS
+    [Arguments]    ${Message}    ${TimeOut}=10s
+    ${Return}    Run Keyword And Ignore Error    Wait Until Page Contains    ${Message}    ${TimeOut}
+    [Return]    ${Return}
+
+iOS SET
+    [Arguments]    ${Platform}    ${Version}    ${DevicesName}    ${Package}    ${Activity}    ${Resetapp}=true    ${Port}=4723    ${Automate}=XCUITest
+    Open Application    http://localhost:${Port}/wd/hub    platformName=${Platform}    platformVersion=${Version}    udid=${DevicesName}    appPackage=${Package}    appActivity=${Activity}    automationName=${Automate}    noReset=${Resetapp}
+    FOR    ${I}    IN    platformName=${Platform}    platformVersion=${Version}    udid=${DevicesName}
+        Log To Console    ${I}
+    END
+
+REPORT SET
+    ${Date}    Get Current Date    result_format=%Y-%m-%dR%H-%M
+    ${RESULT}    Set Variable    RESULT_${Date}
+    Set Suite Variable    ${RESULT}
+    [Return]    ${RESULT}
+
+TEST CASE STATUS END
+    [Arguments]    ${Msg}=PASS
+    Set Suite Variable    ${TESTCASE_STATUS}    ${Msg}
+
+TEST CASE STATUS PENDING
+    [Arguments]    ${TestCaseName}
+    Set Suite Variable    ${TESTCASE_STATUS}    FAIL
+    Set Suite Variable    ${TESTCASE _NAME}    ${TestCaseName}
+    FOR    ${I}    IN    ${TestCaseName}
+        log    ==============================================================================
+        log    [Pending] ${I}
+        log    ==============================================================================
+        Log To Console    ==============================================================================
+        Log To Console    [Pending] ${I}
+        Log To Console    ==============================================================================
+    END
+
+TEST CASE STATUS TEARDOWN
+    FOR    ${I}    IN    ${TESTCASE _NAME}
+        log    ==============================================================================
+        log    [${TESTCASE_STATUS}] ${I}
+        log    ==============================================================================
+        Log To Console    ==============================================================================
+        Log To Console    [${TESTCASE_STATUS}] ${I}
+        Log To Console    ==============================================================================
+    END

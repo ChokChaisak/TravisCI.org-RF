@@ -1,0 +1,226 @@
+*** Settings ***
+Resource          Library.txt
+
+*** Keywords ***
+[W] Capture Page Screenshot
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Capture Page Screenshot
+    ${DateTime}    Get Current Date    result_format=%Y.%m.%dT%H.%M.%S.%f
+    ${ScreenshotDir}    Convert Date    ${DateTime}    result_format=%Y.%m.%d
+    ${ScreenshotDir}    Set Variable    SCREENSHOT${/}${ScreenshotDir}${/}${TEST_NAME}
+    ${Dir}    Replace String    ${CURDIR}    FRAMEWORKS    ${ScreenshotDir}
+    ${OutputScreenshot}    Set Variable    ${Dir}${/}${DateTime}.PNG
+    Capture Page Screenshot    ${OutputScreenshot}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+    [Return]    ${OutputScreenshot}
+
+[W] Check Element
+    [Arguments]    ${Element}    ${timeout}=10s
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Click Element
+    Wait Until Page Contains Element    ${Element}    timeout=${timeout}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[W] Check Meaasge
+    [Arguments]    ${Message}    ${timeout}=10s
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Check Meaasge
+    Wait Until Page Contains    ${Message}    timeout=${timeout}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[W] Click Element
+    [Arguments]    ${Element}
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Click Element
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    Click Element    ${Element}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[W] Click Element Position
+    [Arguments]    ${Element}    ${Position}
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Click Element Position
+    ${Sessions}    Get WebElements    ${Element}
+    Insert Into List    ${Sessions}    0    ${EMPTY}
+    Click Element    @{Sessions}[${Position}]
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[W] Click Text
+    [Arguments]    ${Message}
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Click Text
+    WAIT FOR PAGE CONTAINS ELEMENT    //*[contains(text(),"${Message}")]
+    Click Element    //*[contains(text(),"${Message}")]
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[W] Close Browser
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Close Browser
+    Close All Browsers
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[W] Double Click Element
+    [Arguments]    ${Element}
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Double Click Element
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    Double Click Element    ${Element}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[W] Double Click Element Position
+    [Arguments]    ${Element}    ${Position}
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Double Click Element Position
+    ${Sessions}    Get WebElements    ${Element}
+    Insert Into List    ${Sessions}    0    ${EMPTY}
+    Double Click Element    @{Sessions}[${Position}]
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[W] Enter
+    [Arguments]    ${Element}
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Enter
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    Press Keys    ${Element}    ENTER
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[W] Get Text
+    [Arguments]    ${Element}
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Get Text
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    ${Return}    Get Text    ${Element}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+    [Return]    ${Return}
+
+[W] Get Text Position
+    [Arguments]    ${Element}    ${Position}
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Get Text Position
+    ${Sessions}    Get WebElements    ${Element}
+    Insert Into List    ${Sessions}    0    ${EMPTY}
+    ${Return}    Get Text    @{Sessions}[${Position}]
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+    [Return]    ${Return}
+
+[W] Get Value
+    [Arguments]    ${Element}
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Get Value
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    ${Return}    Get Value    ${Element}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+    [Return]    ${Return}
+
+[W] Get Value Position
+    [Arguments]    ${Element}    ${Position}
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Get Value Position
+    ${Sessions}    Get WebElements    ${Element}
+    Insert Into List    ${Sessions}    0    ${EMPTY}
+    ${Return}    Get Value    @{Sessions}[${Position}]
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+    [Return]    ${Return}
+
+[W] Go Back
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Go Back
+    Go Back
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[W] Input Manual
+    [Arguments]    ${Element}    ${Message}=Input value
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Input Manual
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    ${ManualInput}    Get Value From User    ${Message}
+    Input Text    ${Element}    ${ManualInput}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[W] Input Password
+    [Arguments]    ${Element}    ${Message}
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Input Password
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    Input Password    ${Element}    ${Message}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[W] Input Text
+    [Arguments]    ${Element}    ${Message}
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Input Text
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    Input Text    ${Element}    ${Message}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[W] Mouse Over
+    [Arguments]    ${Element}
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Mouse Over
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    Mouse Over    ${Element}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[W] Open Browser
+    [Arguments]    ${URL}    ${Browser}
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Open Browser
+    Run Keyword If    '${RunTypes}'=='N'    Open Browser    ${URL}    ${Browser}
+    Run Keyword If    '${RunTypes}'=='N'    Maximize Browser Window
+    Run Keyword If    '${RunTypes}'=='H'    Open Browser    ${URL}    headlesschrome
+    Run Keyword If    '${RunTypes}'=='H'    Set Window Size    1920    1080
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[W] Select Frame
+    [Arguments]    @{Element}
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Select Frame
+    Unselect Frame
+    FOR    ${I}    IN    @{Element}
+        WAIT FOR PAGE CONTAINS ELEMENT    ${I}
+        Select Frame    ${I}
+    END
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[W] Select From List By Value
+    [Arguments]    ${Element}    ${Message}
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Select From List By Value
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    ${Status}    ${Error}    Run Keyword And Ignore Error    Select From List By Label    ${Element}    ${Message}
+    Run Keyword If    "${Status}"!="PASS"    Select From List By Value    ${Element}    ${Message}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[W] Switch To Window
+    [Arguments]    ${TAB}=1
+    Set Library Search Order    SeleniumLibrary
+    KEYWORD STATUS PENDING    [W] Switch To Window
+    ${Windows}    Get Window Handles
+    Insert Into List    ${Windows}    0    ${EMPTY}
+    FOR    ${I}    IN    @{Windows}[${TAB}]
+        Switch Window    ${I}
+    END
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN

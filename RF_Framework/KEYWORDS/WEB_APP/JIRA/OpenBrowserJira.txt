@@ -1,0 +1,7 @@
+*** Settings ***
+Resource          ../Keywords.txt
+
+*** Keywords ***
+Open Jira
+    [Arguments]    ${URL}    ${BROWSER}
+    [W] Open Browser    ${URL}    ${BROWSER}

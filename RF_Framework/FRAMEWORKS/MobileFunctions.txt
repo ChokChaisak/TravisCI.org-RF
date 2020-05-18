@@ -1,0 +1,284 @@
+*** Settings ***
+Resource          Library.txt
+
+*** Keywords ***
+[M] Capture Page Screenshot
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Capture Page Screenshot
+    ${DateTime}    Get Current Date    result_format=%Y.%m.%dT%H.%M.%S.%f
+    ${ScreenshotDir}    Convert Date    ${DateTime}    result_format=%Y.%m.%d
+    ${ScreenshotDir}    Set Variable    SCREENSHOT${/}${ScreenshotDir}${/}${TEST_NAME}
+    ${Dir}    Replace String    ${CURDIR}    FRAMEWORKS    ${ScreenshotDir}
+    ${OutputScreenshot}    Set Variable    ${Dir}${/}${DateTime}.PNG
+    Capture Page Screenshot    ${OutputScreenshot}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+    [Return]    ${OutputScreenshot}
+
+[M] Check Element
+    [Arguments]    ${Element}    ${timeout}=10s
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Check Element
+    Wait Until Page Contains Element    ${Element}    timeout=${timeout}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[M] Check Message
+    [Arguments]    ${Message}    ${timeout}=10s
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Check Message
+    Wait Until Page Contains    ${Message}    timeout=${timeout}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[M] Check Message Element
+    [Arguments]    ${Element}    ${Message}
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Check Message Element
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    ${Session}    Get Webelement    ${Element}
+    ${GetMessage}    Get Text    ${Session}
+    ${Text}    Set Variable If    '${GetMessage}'=='${Message}'    PASS    FAIL
+    ${MessageOut}    Set Variable    '${GetMessage}' and '${Message}'
+    ${Return}    Create List    ${Text}    ${MessageOut}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+    [Return]    ${Return}
+
+[M] Check Message Position
+    [Arguments]    ${Message}    ${Positions}=1
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Check Message Position
+    ${Return}    WAIT FOR PANG CONTAINS    ${Message}
+    ${Session}    Get Webelements    //*[@*='${Message}']
+    Insert Into List    ${Session}    0    ${EMPTY}
+    ${GetText}    Get Text    @{Session}[${Positions}]
+    ${Text}    Set Variable If    '${GetText}'=='${Message}'    PASS    FAIL
+    ${MessageOut}    Set Variable    '${GetText}' and '${Message}'
+    ${Return}    Create List    ${Text}    ${MessageOut}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+    [Return]    ${Return}
+
+[M] Click
+    [Arguments]    ${Element}
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Click
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    ${GetSession}    Get Webelement    ${Element}
+    Click Element    ${GetSession}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[M] Click Position
+    [Arguments]    ${Element}    ${Location}
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Click Position
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    ${GetSession}    Get Webelements    ${Element}
+    Insert Into List    ${GetSession}    0    ${EMPTY}
+    Click Element    @{GetSession}[${Location}]
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[M] Element Get Count
+    [Arguments]    ${Element}
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Element Get Count
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    ${ListAllPage}    Get WebElements    ${Element}
+    ${CountE}    Get Length    ${ListAllPage}
+    ${Return}    Set Variable    ${CountE}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+    [Return]    ${Return}
+
+[M] Get Count Element
+    [Arguments]    ${Element}    ${CountItem}
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Get Count Element
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    ${ListAllPage}    Get WebElements    ${Element}
+    ${CountE}    Get Length    ${ListAllPage}
+    ${Return}    Set Variable If    '${CountE}'=='${CountItem}'    PASS    FAIL
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+    [Return]    ${Return}
+
+[M] Get Message
+    [Arguments]    ${Message}
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Get Message
+    WAIT FOR PANG CONTAINS    ${Message}
+    ${ListAllPage}    Get WebElement    //*[contains(@text,'${Message}') or contains(@value,'${Message}')]
+    ${GetText}    Get Text    ${ListAllPage}
+    ${Return}    Set Variable    ${GetText}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+    [Return]    ${Return}
+
+[M] Get Message Element
+    [Arguments]    ${Element}
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Get Message Element
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    ${ListAllPage}    Get WebElement    ${Element}
+    ${GetText}    Get Text    ${ListAllPage}
+    ${Return}    Set Variable    ${GetText}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+    [Return]    ${Return}
+
+[M] Get Message Element Position
+    [Arguments]    ${Element}    ${Location}
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Get Message Element Position
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    ${GetSession}    Get Webelements    ${Element}
+    Insert Into List    ${GetSession}    0    ${EMPTY}
+    ${Return}    Get Text    @{GetSession}[${Location}]
+    ${Return}    Set Variable    ${Return}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+    [Return]    ${Return}
+
+[M] Get Message Regular
+    [Arguments]    ${Message}    ${Regular}
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Get Message Regular
+    WAIT FOR PAGE CONTAINS ELEMENT    //*[contains(@text,'${Message}') or contains(@value,'${Message}')]
+    ${ListAllPage}    Get WebElement    //*[contains(@text,'${Message}') or contains(@value,'${Message}')]
+    ${GetText}    Get Text    ${ListAllPage}
+    ${GetText}    Get Regexp Matches    ${GetText}    ${Regular}
+    ${Return}    Set Variable    ${GetText}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+    [Return]    ${Return}
+
+[M] Go Back
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Go Back
+    Go Back
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[M] Go Back To Element
+    [Arguments]    ${Element}
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Go Back To Element
+    FOR    ${index}    IN RANGE    10
+        ${Status}    ${Msg}    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}    5s
+        Run Keyword If    '${Status}'!='PASS'    Go Back
+        Run Keyword If    '${Status}'=='PASS'    Exit For Loop
+    END
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[M] Go Back To Message
+    [Arguments]    ${Messge}
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Go Back To Message
+    FOR    ${index}    IN RANGE    10
+        ${Status}    ${Msg}    WAIT FOR PANG CONTAINS    ${Messge}    5s
+        Run Keyword If    '${Status}'!='PASS'    Go Back
+        Run Keyword If    '${Status}'=='PASS'    Exit For Loop
+    END
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[M] Input Data
+    [Arguments]    ${Element}    ${Msg}
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Input Data
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    ${GetSession}    Get Webelement    ${Element}
+    Input Text    ${GetSession}    ${Msg}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[M] Input Data Position
+    [Arguments]    ${Element}    ${Position}    ${Msg}
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Input Data
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    ${GetSession}    Get Webelements    ${Element}
+    Insert Into List    ${GetSession}    0    ${EMPTY}
+    Input Text    @{GetSession}[${Position}]    ${Msg}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[M] Manual Input
+    [Arguments]    ${Element}    ${Message}
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Manual Input
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    ${GetSession}    Get Webelement    ${Element}
+    Click Element    ${GetSession}
+    Execute Manual Step    ${Message}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[M] Open Application
+    [Arguments]    ${Platform}    ${Version}    ${DevicesName}    ${Package}    ${Activity}    ${Port}=4723    ${Resetapp}=true
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Open Application
+    ${ANDROID}    Convert To Lowercase    '${Platform}'=='ANDROID'
+    ${iOS}    Convert To Lowercase    '${Platform}'=='iOS'
+    Run Keyword And Ignore Error    Appium    ${Port}
+    Run Keyword If    ${ANDROID}    Run Keyword    ANDROID SET    Android    ${Version}    ${DevicesName}    ${Package}    ${Activity}    ${Resetapp}    ${Port}
+    Run Keyword If    ${iOS}    Run Keyword    iOS SET    iOS    ${Version}    ${DevicesName}    ${Package}    ${Activity}    ${Resetapp}    ${Port}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[M] Swipe
+    [Arguments]    ${Element_Start}    ${Element_End}
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Swipe
+    ${Start}    Get Element Location    ${Element_Start}
+    ${End}    Get Element Location    ${Element_End}
+    @{List}    Create List    ${Start['x']}    ${Start['y']}    ${End['x']}    ${End['y']}    3000
+    Swipe    @{List}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[M] Swipe By Percent Height
+    [Arguments]    ${Element_Start}    ${Element_End}
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Swipe By Percent Height
+    ${height}    Get Window Height
+    ${width}    Get Window Width
+    ${StartX}    Evaluate    ${width}/2
+    ${StartY}    Evaluate    (${height}*${Element_Start})/100
+    ${EndX}    Evaluate    ${width}/2
+    ${EndY}    Evaluate    (${height}*${Element_End})/100
+    @{List}    Create List    ${StartX}    ${StartY}    ${EndX}    ${EndY}    1000
+    Swipe    @{List}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[M] Swipe By Percent Width
+    [Arguments]    ${Element_Start}    ${Element_End}
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Swipe By Percent Width
+    ${height}    Get Window Height
+    ${width}    Get Window Width
+    ${StartX}    Evaluate    (${width}*${Element_Start})/100
+    ${StartY}    Evaluate    ${height}/2
+    ${EndX}    Evaluate    (${width}*${Element_End})/100
+    ${EndY}    Evaluate    ${height}/2
+    @{List}    Create List    ${StartX}    ${StartY}    ${EndX}    ${EndY}    1000
+    Swipe    @{List}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[M] Swipe Position
+    [Arguments]    ${Element}
+    Set Library Search Order    AppiumLibrary
+    KEYWORD STATUS PENDING    [M] Swipe Position
+    WAIT FOR PAGE CONTAINS ELEMENT    ${Element}
+    ${ElementSize}    Get Element Size    ${Element}
+    ${Location}    Get Element Location    ${Element}
+    @{List}    Create List    ${ElementSize['width']}    ${Location['x']}    ${Location['y']}    ${Location['x']}    3000
+    Swipe    @{List}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN

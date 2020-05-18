@@ -1,0 +1,66 @@
+*** Settings ***
+Resource          Library.txt
+
+*** Keywords ***
+[API] Create Session
+    [Arguments]    ${URL_API}
+    Set Library Search Order    RequestsLibrary
+    KEYWORD STATUS PENDING    [API] Create Session
+    Create Session    TEST    ${URL_API}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[API] Create Dictionary
+    [Arguments]    @{List_Dictionary}
+    Set Library Search Order    RequestsLibrary
+    KEYWORD STATUS PENDING    [API] Create Dictionary
+    ${Return}    Create Dictionary    @{List_Dictionary}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+    [Return]    ${Return}
+
+[API] Put Request
+    [Arguments]    ${Link_API}    ${Data_Headers}    ${Data_Body}
+    Set Library Search Order    RequestsLibrary
+    KEYWORD STATUS PENDING    [API] Put Request
+    ${Return}    Put Request    TEST    ${Link_API}    headers=${Data_Headers}    data=${Data_Body}
+    Should Contain    ${Return.text}    200
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+    [Return]    ${Return}
+
+[API] Get Request
+    [Arguments]    ${Link_API}    ${Data_Headers}    ${Data_Body}
+    Set Library Search Order    RequestsLibrary
+    KEYWORD STATUS PENDING    [API] Get Request
+    ${Return}    Get Request    TEST    ${Link_API}    headers=${Data_Headers}    data=${Data_Body}
+    Request Should Be Successful    ${Return}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+    [Return]    ${Return}
+
+[API] Get Dictionary Keys
+    [Arguments]    ${API_Messages}
+    Set Library Search Order    RequestsLibrary
+    KEYWORD STATUS PENDING    [API] Get Dictionary Keys
+    ${Messages}    Set Variable    ${API_Messages.json()}
+    ${Return}    Get Dictionary Keys    ${Messages}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+    [Return]    ${Return}
+
+[API] Log Message
+    [Arguments]    ${API_Messages}
+    Set Library Search Order    RequestsLibrary
+    KEYWORD STATUS PENDING    [API] Get Dictionary Keys
+    Log To Console    ${API_Messages}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+
+[API] Compare
+    [Arguments]    ${Messages}    ${Compare}
+    Set Library Search Order    RequestsLibrary
+    KEYWORD STATUS PENDING    [API] Compare
+    Should Be Equal    ${Messages}    ${Compare}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN

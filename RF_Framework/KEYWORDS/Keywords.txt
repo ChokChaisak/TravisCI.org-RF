@@ -1,0 +1,5 @@
+*** Settings ***
+Resource          ../FRAMEWORKS/AllResource.txt
+Resource          WEB_APP/Keywords.txt
+Resource          MOBILE_APP/Keywords.txt
+Resource          MAIMFRAMEWORK_APP/Keywords.txt

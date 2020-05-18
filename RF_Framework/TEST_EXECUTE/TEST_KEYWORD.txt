@@ -1,0 +1,48 @@
+*** Settings ***
+Resource          ../KEYWORDS/Keywords.txt
+Resource          TEST_VARIABLE.txt
+
+*** Variables ***
+
+*** Keywords ***
+TC001_MEUN
+    [W] Open Browser    https://www.ngerntidlor.com/th/home.html    ${BROWSER}
+    Run Keyword And Ignore Error    [W] Click Element    //*[@class="navbar-toggler-icon"]
+    [W] Click Element    //*[@title="อยากได้เงินกู้"]
+    [Teardown]    [W] Close Browser
+
+TC002_QA
+    [W] Open Browser    https://www.ngerntidlor.com/th/home.html    ${BROWSER}
+    Run Keyword And Ignore Error    [W] Click Element    //*[@class="btn btn-close-cookie font-ngerntidlor-regular text-white"]
+    Run Keyword And Ignore Error    [W] Click Element    //*[@class="navbar-toggler-icon"]
+    [W] Click Element    //*[@title='อยากซื้อประกันภัย']
+    [W] Check Meaasge    คำถาม-คำตอบ
+    [W] Check Meaasge    ทำไมต้องซื้อประกันรถยนต์กับเงินติดล้อโบรกเกอร์
+    [W] Click Element    //*[text()='ทำไมต้องซื้อประกันรถยนต์กับเงินติดล้อโบรกเกอร์']
+    [W] Check Meaasge    เพราะประกันรถยนต์ที่นี่ สามารถเลือกผ่อนค่าเบี้ยประกันแบบเงินสดได้ ทุกชั้นประกัน (ชั้น 1, 2+,2 , 3+, 3) สูงสุด 6 งวด ไม่มีบัตรเครดิตก็ผ่อนได้ สบายๆกระเป๋า รวมถึง ที่นี่เราเลือกสรรบริษัทประกันที่มีคุณภาพการบริการที่ดีเยี่ยม มากกว่า 15 บริษัทประกันชั้นนำ ลูกค้าสบายใจได้เมื่อซื้อประกันผ่านเรา
+    [Teardown]    [W] Close Browser
+
+TC003_APPMOBILE
+    [M] Open Application    android    9    HXT7N18314003478    com.ntl.portal    com.ntl.MainActivity
+    [M] Input Data    //*[@content-desc='txtUser']    qqwww
+    [M] Input Data    //*[@content-desc='txtPassword']    1234
+    [M] Click    //*[@content-desc='btnLogin']
+    [M] Check Message    undefined    20s
+
+TC004_APPMOBILE_INVALID
+    [W] Open Browser    https://www.ngerntidlor.com/th/home.html    ${BROWSER}
+    [W] Click Element    //*[@class="btn btn-close-cookie font-ngerntidlor-regular text-white"]
+    [W] Click Element    //*[@class="navbar-toggler-icon"]
+    [W] Click Element    //*[@title="อยากได้เงินกู้"]
+    [W] Click Element    //*[@class="navbar-toggler-icon"]
+    [W] Click Element    //*[@title="อยากซื้อประกันภัย"]
+    [M] Open Application    android    9    HXT7N18314003478    com.ntl.portal    com.ntl.MainActivity
+    [M] Input Data    //*[@content-desc='txtUser']    qqwww
+    [M] Input Data    //*[@content-desc='txtPassword']    1234
+    [M] Click    //*[@content-desc='btnLogin']
+    [W] Click Element    //*[@class="btn btn-close-cookie font-ngerntidlor-regular text-white"]
+    [W] Click Element    //*[@class="navbar-toggler-icon"]
+    [W] Click Element    //*[@title="อยากได้เงินกู้"]
+    [W] Click Element    //*[@class="navbar-toggler-icon"]
+    [W] Click Element    //*[@title="อยากซื้อประกันภัย"]
+    [Teardown]    [W] Close Browser

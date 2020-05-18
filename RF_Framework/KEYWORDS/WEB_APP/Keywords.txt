@@ -1,0 +1,6 @@
+*** Settings ***
+Resource          ../Keywords.txt
+Resource          JIRA/OpenBrowserJira.txt
+Resource          JIRA/LoginJira.txt
+Resource          JIRA/CreateIssue.txt
+Resource          MantisBT/Keyword.txt

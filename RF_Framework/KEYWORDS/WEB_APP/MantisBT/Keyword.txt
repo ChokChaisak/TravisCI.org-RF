@@ -1,0 +1,28 @@
+*** Settings ***
+Resource          ../Keywords.txt
+
+*** Keywords ***
+Open MantisBT
+    [Arguments]    ${URL}    ${BROWSER}
+    [W] Open Browser    ${URL}    ${BROWSER}
+
+Login MantisBT
+    [W] Input Text    //*[@id="username"]    administrator
+    [W] Click Element    //*[@value="Login"]
+    [W] Input Text    //*[@id="password"]    P2ssw0rd
+    [W] Click Element    //*[@value="Login"]
+
+Creaate Project MantisBT
+    [W] Input Text    //*[@id="project-name"]    Test
+    [W] Input Text    //*[@id="project-description"]    Test
+    [W] Click Element    //*[@value="Add Project"]
+
+Remove Project MantisBT
+    [W] Click Element    //a[text()="Test"]
+    [W] Click Element    //*[@value="Delete Project"]
+    [W] Click Element    //*[@value="Delete Project"]
+
+LogOut MantisBT
+    [W] Click Element    //*[@class="user-info"]
+    [W] Click Element    //*[@class="ace-icon fa fa-sign-out"]
+    [Teardown]    [W] Close Browser

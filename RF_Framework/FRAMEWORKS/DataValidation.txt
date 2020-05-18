@@ -1,0 +1,39 @@
+*** Settings ***
+Resource          Library.txt
+
+*** Keywords ***
+[ER] Get Data Row For Excel
+    [Arguments]    ${Filename}    ${SheetName}    ${Row}
+    Set Library Search Order    ExcelRobot
+    KEYWORD STATUS PENDING    [ER] Get Data Row For Excel
+    ${CountColumn}    ${CountRow}    [ER] Open Excel    ${Filename}    ${SheetName}
+    ${Row}    Evaluate    ${Row}-1
+    FOR    ${I}    IN    ${Row}
+        ${Return}    [ER] Read Cell Data Column For Excel    ${SheetName}    ${CountColumn}    ${I}
+    END
+    Insert Into List    ${Return}    0    ${EMPTY}
+    KEYWORD STATUS END
+    [Teardown]    KEYWORD STATUS TEARDOWN
+    [Return]    ${Return}
+
+[ER] Open Excel
+    [Arguments]    ${Filename}    ${SheetName}
+    Set Library Search Order    ExcelRobot
+    ${Filename}    Join Path    ${Filename}
+    ${DIR}    Remove String    ${CURDIR}    FRAMEWORKS
+    ${DIR}    Set Variable    ${DIR}${/}${Filename}
+    Open Excel    ${DIR}
+    ${CountColumn}    Get Column Count    ${SheetName}
+    ${CountRow}    Get Row Count    ${SheetName}
+    [Return]    ${CountColumn}    ${CountRow}
+
+[ER] Read Cell Data Column For Excel
+    [Arguments]    ${SheetName}    ${CountColumn}    ${Row}
+    Set Library Search Order    ExcelRobot
+    ${ListData}    Create List
+    FOR    ${I}    IN RANGE    ${CountColumn}
+        ${Return}    Read Cell Data    ${SheetName}    ${I}    ${Row}
+        Append To List    ${ListData}    ${Return}
+        Set Suite Variable    ${ListData}
+    END
+    [Return]    ${ListData}
