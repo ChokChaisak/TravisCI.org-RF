@@ -12,6 +12,5 @@ install:
   - pip install robotframework-seleniumlibrary==4.3.0
   - pip install robotframework-appiumlibrary==1.5.0.4
   - pip install webdrivermanager==0.7.4
-  - webdrivermanager chrome
 script: 
   robot -d OUTPUT --output XML/Output --Variable RunTypes:H RF_Framework
